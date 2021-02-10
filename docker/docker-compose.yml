@@ -35,6 +35,6 @@ services:
     environment:
       TZ: Europe/Russia
     ports:
-      - 8880:8888
+      - 8880:8080
     depends_on:
       - mysql_service_vesere
