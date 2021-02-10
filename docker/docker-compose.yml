@@ -1,0 +1,40 @@
+version: '3'
+
+volumes:
+  vesere_database:
+    external: true
+
+services:
+  mysql_service_vesere:
+    image: mysql_service_vesere
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_PASSWORD=root
+      - MYSQL_DATABASE=vesere
+    build:
+      context: ./mysql/
+    ports:
+      - "3307:3306"
+    restart: always
+    command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci --init-connect='SET NAMES UTF8;' --innodb-flush-log-at-trx-commit=0
+    volumes:
+      - vesere_database:/var/lib/mysql
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8088:8080
+
+  server_vesere:
+    container_name: server_vesere
+    build:
+      context: ../
+      dockerfile: ./docker/server/Dockerfile
+    working_dir: /apps
+    environment:
+      TZ: Europe/Russia
+    ports:
+      - 8880:8888
+    depends_on:
+      - mysql_service_vesere

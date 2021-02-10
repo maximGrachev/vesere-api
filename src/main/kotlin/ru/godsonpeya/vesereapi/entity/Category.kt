@@ -9,6 +9,7 @@ data class Category(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Int = 0,
 
+//    @NotBlank  TODO validation of this field
     @Column(name = "name")
     var name: String? = null,
 
